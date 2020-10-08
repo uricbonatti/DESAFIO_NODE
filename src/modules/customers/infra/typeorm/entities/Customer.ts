@@ -7,7 +7,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-
+import { Expose } from 'class-transformer';
+import { differenceInYears } from 'date-fns';
 import City from '@modules/cities/infra/typeorm/entities/City';
 
 @Entity('customers')
@@ -24,10 +25,15 @@ class Customer {
   @Column()
   birthday: Date;
 
+  @Expose({ name: 'age' })
+  getAge(): number {
+    return differenceInYears(Date.now(), this.birthday);
+  }
+
   @Column()
   city_id: string;
 
-  @ManyToOne(() => City)
+  @ManyToOne(() => City, { eager: true })
   @JoinColumn({ name: 'city_id' })
   city: City;
 
