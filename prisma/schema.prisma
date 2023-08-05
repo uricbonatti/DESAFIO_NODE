@@ -9,3 +9,29 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Customers {
+  id         String   @id @default(uuid())
+  fullname   String
+  gender     String
+  birthday   DateTime
+  city       City     @relation(fields: [cityId], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime
+  cityId     String
+
+  @@map("customers")
+}
+
+model City {
+  id         String   @id @default(uuid())
+  name       String
+  uf         String
+  created_at DateTime @default(now())
+  updated_at DateTime
+
+  Customers Customers[]
+
+  @@unique([name, uf])
+  @@map("cities")
+}
