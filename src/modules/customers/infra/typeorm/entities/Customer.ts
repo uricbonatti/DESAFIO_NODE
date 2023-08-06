@@ -10,9 +10,10 @@ import {
 import { Expose } from 'class-transformer';
 import { differenceInYears } from 'date-fns';
 import City from '@modules/cities/infra/typeorm/entities/City';
+import {Customer as CustomerType} from '@modules/customers/entities/Customer'
 
 @Entity('customers')
-class Customer {
+class Customer implements CustomerType{
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { City as CityType } from '@modules/cities/entities/City';
+
 @Entity('cities')
-class City {
+class City implements CityType  {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

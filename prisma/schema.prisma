@@ -15,10 +15,10 @@ model Customers {
   fullname   String
   gender     String
   birthday   DateTime
-  city       City     @relation(fields: [cityId], references: [id])
+  city       City     @relation(fields: [city_id], references: [id])
   created_at DateTime @default(now())
-  updated_at DateTime
-  cityId     String
+  updated_at DateTime @default(now()) @updatedAt
+  city_id    String
 
   @@map("customers")
 }
@@ -28,7 +28,7 @@ model City {
   name       String
   uf         String
   created_at DateTime @default(now())
-  updated_at DateTime
+  updated_at DateTime @default(now()) @updatedAt
 
   Customers Customers[]
 
