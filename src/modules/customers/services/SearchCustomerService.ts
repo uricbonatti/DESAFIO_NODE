@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import IAdjustTextProvider from '@shared/container/providers/AdjustTextProvider/models/IAdjustTextProvider';
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
-import Customer from '../infra/typeorm/entities/Customer';
+import {Customer} from '../entities/Customer';
 
 interface IRequest {
   name: string;

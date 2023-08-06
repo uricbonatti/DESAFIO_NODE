@@ -6,7 +6,7 @@ import AppError from '@shared/errors/AppError';
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import ICitiesRepository from '@modules/cities/repositories/ICitiesRepository';
 import IAdjustTextProvider from '@shared/container/providers/AdjustTextProvider/models/IAdjustTextProvider';
-import Customer from '../infra/typeorm/entities/Customer';
+import {Customer} from '../entities/Customer';
 
 interface IRequest {
   fullname: string;

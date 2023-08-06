@@ -2,15 +2,14 @@ import { v4 } from 'uuid';
 
 import ICreateCityDTO from '@modules/cities/dtos/ICreateCityDTO';
 import ISearchCityDTO from '@modules/cities/dtos/ISearchCityDTO';
-import City from '@modules/cities/infra/typeorm/entities/City';
+import {City} from '../../entities/City';
 import ICitiesRepository from '../ICitiesRepository';
 
 class FakeCitiesRepository implements ICitiesRepository {
   private cities: City[] = [];
 
   public async create({ name, uf }: ICreateCityDTO): Promise<City> {
-    const city = new City();
-    Object.assign(city, { id: v4(), name, uf });
+    const city: City = { id: v4(), name, uf } as City
     this.cities.push(city);
     return city;
   }

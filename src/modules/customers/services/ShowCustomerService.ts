@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
-import Customer from '../infra/typeorm/entities/Customer';
+import {Customer} from '../entities/Customer';
 
 interface IRequest {
   id: string;

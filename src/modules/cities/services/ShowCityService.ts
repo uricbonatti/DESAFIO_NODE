@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
 import { inject, injectable } from 'tsyringe';
 import ICitiesRepository from '../repositories/ICitiesRepository';
-import City from '../infra/typeorm/entities/City';
+import {City} from '../entities/City';
 
 interface IRequest {
   id: string;

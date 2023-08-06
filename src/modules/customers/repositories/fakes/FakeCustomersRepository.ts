@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import Customer from '@modules/customers/infra/typeorm/entities/Customer';
+import {Customer} from '../../entities/Customer';
 import ICreateCustomerDTO from '@modules/customers/dtos/ICreateCustomerDTO';
 import ICustomersRepository from '../ICustomersRepository';
 
@@ -12,14 +12,14 @@ class FakeCustomersRepository implements ICustomersRepository {
     gender,
     city_id,
   }: ICreateCustomerDTO): Promise<Customer> {
-    const customer = new Customer();
-    Object.assign(customer, {
+    const customer: Customer = {
       id: v4(),
       fullname,
       birthday,
       gender,
       city_id,
-    });
+    } as Customer
+
     this.customers.push(customer);
     return customer;
   }

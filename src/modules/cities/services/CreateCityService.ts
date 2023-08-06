@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import IAdjustTextProvider from '@shared/container/providers/AdjustTextProvider/models/IAdjustTextProvider';
 import ICitiesRepository from '../repositories/ICitiesRepository';
-import City from '../infra/typeorm/entities/City';
+import {City} from '../entities/City';
 
 interface IRequest {
   name: string;
