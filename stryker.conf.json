@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "yarn",
+  "reporters": [
+    "html",
+    "clear-text",
+    "progress",
+    "dashboard"
+  ],
+  "testRunner": "jest",
+  "plugins": ["@stryker-mutator/typescript-checker","@stryker-mutator/jest-runner"],
+  "coverageAnalysis": "perTest",
+  "jest": {
+    "configFile": "jest.config.js",
+    "projectType": "custom"
+  },
+  "tempDirName": "styker-tmp",
+  "ignorePatterns": ["/node_modules/"],
+  "typescriptChecker": {
+    "prioritizePerformanceOverAccuracy": false
+  },
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "mutate": [
+    "src/**/*.ts",
+    "!src/**/*.spec.ts"
+  ],
+  "logLevel": "info"
+}
