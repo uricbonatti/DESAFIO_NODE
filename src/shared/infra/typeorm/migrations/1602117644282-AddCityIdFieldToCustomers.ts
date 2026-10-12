@@ -5,8 +5,7 @@ import {
   TableColumn,
 } from 'typeorm';
 
-export default class AddCityIdFieldToCustomers1602117644282
-  implements MigrationInterface {
+export default class AddCityIdFieldToCustomers1602117644282 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
       'customers',

@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { randomUUID as v4 } from 'crypto';
 import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 import ICreateCustomerDTO from '@modules/customers/dtos/ICreateCustomerDTO';
 import ICustomersRepository from '../ICustomersRepository';

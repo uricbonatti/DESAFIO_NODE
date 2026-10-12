@@ -1,4 +1,5 @@
-import { Repository, getRepository, Like } from 'typeorm';
+import { Repository, Like } from 'typeorm';
+import dataSource from '@shared/infra/typeorm';
 
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import ICreateCustomerDTO from '@modules/customers/dtos/ICreateCustomerDTO';
@@ -8,7 +9,7 @@ class CustomersRepository implements ICustomersRepository {
   private ormRepository: Repository<Customer>;
 
   constructor() {
-    this.ormRepository = getRepository(Customer);
+    this.ormRepository = dataSource.getRepository(Customer);
   }
 
   public async create({
@@ -33,8 +34,8 @@ class CustomersRepository implements ICustomersRepository {
   }
 
   public async findById(id: string): Promise<Customer | undefined> {
-    const findCustomer = await this.ormRepository.findOne(id);
-    return findCustomer;
+    const findCustomer = await this.ormRepository.findOneBy({ id });
+    return findCustomer ?? undefined;
   }
 
   public async findByName(customer_name: string): Promise<Customer[]> {

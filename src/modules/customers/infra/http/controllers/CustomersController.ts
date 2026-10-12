@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
+import { instanceToInstance } from 'class-transformer';
 import CreateCustomerService from '@modules/customers/services/CreateCustomerService';
 import DeleteCustomerService from '@modules/customers/services/DeleteCustomerService';
 import RenameCustomerService from '@modules/customers/services/RenameCustomerService';
@@ -48,6 +48,6 @@ export default class CustomersController {
     const { id } = request.params;
     const showCustomer = container.resolve(ShowCustomerService);
     const customer = await showCustomer.execute({ id });
-    return response.json(classToClass(customer));
+    return response.json(instanceToInstance(customer));
   }
 }
