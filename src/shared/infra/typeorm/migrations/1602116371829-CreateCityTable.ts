@@ -1,7 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateCityTable1602116371829
-  implements MigrationInterface {
+export default class CreateCityTable1602116371829 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createDatabase('desafio1_compasso', true);
     await queryRunner.createTable(

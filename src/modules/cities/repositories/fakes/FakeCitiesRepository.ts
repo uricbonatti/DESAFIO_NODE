@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { randomUUID as v4 } from 'crypto';
 
 import ICreateCityDTO from '@modules/cities/dtos/ICreateCityDTO';
 import ISearchCityDTO from '@modules/cities/dtos/ISearchCityDTO';

@@ -1,4 +1,5 @@
-import { getRepository, Like, Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import dataSource from '@shared/infra/typeorm';
 
 import ICitiesRepository from '@modules/cities/repositories/ICitiesRepository';
 import ICreateCityDTO from '@modules/cities/dtos/ICreateCityDTO';
@@ -9,7 +10,7 @@ class CitiesRepository implements ICitiesRepository {
   private ormRepository: Repository<City>;
 
   constructor() {
-    this.ormRepository = getRepository(City);
+    this.ormRepository = dataSource.getRepository(City);
   }
 
   public async create({ name, uf }: ICreateCityDTO): Promise<City> {
@@ -23,9 +24,7 @@ class CitiesRepository implements ICitiesRepository {
   }
 
   public async exist({ uf, name }: ICreateCityDTO): Promise<boolean> {
-    const city = await this.ormRepository.findOne({
-      where: { name, uf },
-    });
+    const city = await this.ormRepository.findOneBy({ name, uf });
     if (!city) {
       return false;
     }
@@ -57,8 +56,8 @@ class CitiesRepository implements ICitiesRepository {
   }
 
   public async findById(id: string): Promise<City | undefined> {
-    const city = await this.ormRepository.findOne({ where: { id } });
-    return city;
+    const city = await this.ormRepository.findOneBy({ id });
+    return city ?? undefined;
   }
 }
 export default CitiesRepository;

@@ -1,58 +1,68 @@
-# Rodando o projeto
+# Desafio Node: Cidades e Clientes
 
-### Requisitos
+[![CI](https://github.com/uricbonatti/DESAFIO_NODE/actions/workflows/ci.yml/badge.svg)](https://github.com/uricbonatti/DESAFIO_NODE/actions/workflows/ci.yml)
+![Node](https://img.shields.io/badge/node-22%20%7C%2024-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
+![Coverage](https://img.shields.io/badge/coverage-100%25%20services-brightgreen)
 
-- NodeJS LTS
-- Docker
+API REST de cadastro de **cidades** e **clientes**, feita como desafio técnico da Compasso UOL (2020).
 
-### Configurando
+## Destaques técnicos
 
-Foi utilizado um container do Bando de Dados PostgreSQL para armazenar os dados, para isso é necessario instalar e configurar o mesmo.
-Para isto execute o comando a seguir:
-`docker run --name api-desafio -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres`
+- **Arquitetura modular** (`cities`, `customers`) com separação entre domínio (services, DTOs, interfaces de repositório) e infraestrutura (HTTP, TypeORM), além de injeção de dependência (`tsyringe`)
+- **PostgreSQL + TypeORM 0.3** com **migrations**, aplicadas automaticamente ao subir a API
+- **Normalização de nomes** (sem acentos, maiúsculo): buscas ignoram acentos e caixa
+- **Idade do cliente calculada** a partir da data de nascimento (`class-transformer` + `date-fns`)
+- **Testes:** 22 unitários com repositórios falsos (100% dos services) e **11 e2e com Testcontainers**, que sobem um PostgreSQL real e rodam as migrations num banco limpo
 
-Após a configuração do container docker é necessario subir as migrations do banco.
-Para isto execute um dos comandos a seguir:
-`yarn typeorm migration:run`
-`npm run typeorm migration:run`
+## Executando
 
-Para reverter as migrations é necessario executar 3x um dos comandos a seguir:
-`yarn typeorm migration:revert`
-`npm run typeorm migration:revert`
+### Com Docker Compose
 
-Após as migrations terem se completado com sucesso, é hora de iniciar a api. Para isso utilize o um dos comando abaixo:
+```bash
+docker compose up --build
+```
 
-- Para modo de desenvolvimento com watcher:
-  `yarn dev:server`
-  `npm run dev:server`
+A API sobe em `http://localhost:3333` com o PostgreSQL, já com as migrations aplicadas.
 
-- Para modo de desenvolvimento sem watcher:
-  `yarn start`
-  `npm start`
+### Localmente
 
-- Para compilar para produção (não testado ainda):
-  `yarn build`
-  `npm run build`
+Requer Node.js **22** ou **24** e um PostgreSQL.
 
-- Para realizar os testes:
-  `yarn test`
-  `npm run test`
+```bash
+cp .env.example .env
+docker run -d --name desafio-pg -e POSTGRES_PASSWORD=docker -e POSTGRES_DB=desafio1_compasso -p 5432:5432 postgres:16-alpine
+npm ci
+npm run dev:server
+```
 
-### EndPoints
+Para gerenciar migrations manualmente: `npm run typeorm migration:run` / `migration:revert`.
 
-Os endpoints da rota `cities` são:
+## Rotas
 
-- POST: JSON.BODY(`{ "name": "Nome da Cidade", "uf":"Sigla da UF" }`)
+| Método | Rota | Descrição |
+|---|---|---|
+| POST | `/cities` | Cadastra cidade: `{ "name": "Campinas", "uf": "SP" }` |
+| GET | `/cities?name=&uf=` | Busca por trecho do nome e/ou UF |
+| GET | `/cities/:id` | Mostra a cidade (id uuid) |
+| POST | `/customers` | Cadastra cliente: `{ "fullname", "gender": "male"\|"female", "birthday", "city_id" }` |
+| GET | `/customers?name=` | Busca por trecho do nome |
+| GET | `/customers/:id` | Mostra o cliente com `age` calculada e a cidade |
+| PATCH | `/customers/:id` | Renomeia: `{ "fullname": "Novo Nome" }` |
+| DELETE | `/customers/:id` | Remove o cliente |
 
-- GET: QUERY(`?name="Nome da Cidade"&uf="Sigla da UF"`)
+Erros de regra de negócio (cidade repetida, cidade inexistente, nascimento no futuro, registro não encontrado) respondem **400** com `{ "status": "error", "message": "..." }`.
 
-- GET: PARAMS(`:id`) - como uuid
+## Testes
 
-Os endpoints da rota `customers` são:
+```bash
+npm test               # unitários (com --coverage gera o relatório em coverage/)
+npm run test:e2e       # e2e: sobe um PostgreSQL real com Testcontainers (requer Docker)
+npm run lint
+npm run typecheck
+```
 
-- POST: JSON.BODY(`{ "fullname":"Nome Completo", "gender":"male ou female", "birthday":"Date no formato: YYYY-MM-DDTHH:mm:ssZ (exemplo: 1992-10-08T16:37:56.447Z)", "city_id": "id tipo uuid da cidade" }`)
+## Licença
 
-- DELETE: PARAMS(`:id`) - como uuid
-- GET: PARAMS(`:id`) - como uuid
-- PATCH: PARAMS(`:id`) e JSON.BODY(`"fullname":"Novo nome do cliente"`)
-- GET: QUERY(`?name="trecho do nome do cliente`)
+MIT
